@@ -4,7 +4,12 @@ import Book from '../Book/Book'
 const bookShelf = (props) => {
 
   const books = props.books.map(book => 
-    <li> <Book authors={book.authors} title={book.title} coverUrl={book.coverUrl} /> </li>
+    <li>
+      <Book
+        authors={book.authors.join(', ')}
+        title={book.title}
+        coverUrl={book.imageLinks.thumbnail} />
+    </li>
   );
 
   return (

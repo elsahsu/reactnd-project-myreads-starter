@@ -16,15 +16,26 @@ class BooksApp extends React.Component {
        * pages, as well as provide a good URL they can bookmark and share.
        */
       showSearchPage: false,
-      books: []
+      books: [],
+      currentlyReading: []
     }
   }
 
   componentDidMount() {
     console.log('Mounted');
+    let currentlyReading = [];
     BooksAPI.getAll().then(results => {
       console.log(results);
-      this.setState({books: results});
+      results.forEach(book => {
+        if (book.shelf === 'currentlyReading') {
+          currentlyReading.push(book);
+          console.log(book);
+        }
+      });
+      this.setState({
+        books: results,
+        currentlyReading: currentlyReading
+      });
     });
   }
 
@@ -53,7 +64,7 @@ class BooksApp extends React.Component {
             </div>
             <div className="list-books-content">
               <div>
-                <BookShelf title="Currently Reading" books={currentlyReading} />
+                <BookShelf title="Currently Reading" books={this.state.currentlyReading} />
                 <div className="bookshelf">
                   <h2 className="bookshelf-title">Currently Reading</h2>
                   <div className="bookshelf-books">
