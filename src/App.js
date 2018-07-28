@@ -47,11 +47,21 @@ class BooksApp extends React.Component {
     });
   }
 
-  moveToShelf(book, shelf) {
-    if (shelf === book.shelf) {
-      console.log('Book ' + book.id + ' already in ' + shelf);
+  moveToShelf = (book, shelf) => {
+    console.log(this);
+    const currentShelfName = book.shelf;
+    const targetShelfName = shelf;
+    if (currentShelfName === targetShelfName) {
+      console.log('Book ' + book.id + ' already in ' + targetShelfName);
     } else {
-      console.log('Move book ' + book.id + ' to ' + shelf);
+      console.log('Move book ' + book.id + ' from' + currentShelfName + ' to ' + targetShelfName);
+      book.shelf = shelf;
+      const currentShelf = this.state[currentShelfName].filter((shelfBook) => book.id !== shelfBook.id);
+      const targetShelf = this.state[targetShelfName].concat([book]);
+      let newState = {}
+      newState[currentShelfName] = currentShelf;
+      newState[targetShelfName] = targetShelf;
+      this.setState(newState);
       BooksAPI.update(book, shelf);
     }
   }
