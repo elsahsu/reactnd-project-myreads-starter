@@ -4,7 +4,7 @@ import Book from '../Book/Book'
 const bookShelf = (props) => {
 
   const books = props.books.map(book => 
-    <li>
+    <li key={book.id}>
       <Book
         authors={book.authors.join(', ')}
         title={book.title}

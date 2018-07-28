@@ -2,7 +2,6 @@ import React from 'react'
 import * as BooksAPI from './BooksAPI'
 import './App.css'
 import SearchPage from './components/SearchPage/SearchPage'
-import Book from './components/Book/Book'
 import BookShelf from './components/BookShelf/BookShelf'
 
 class BooksApp extends React.Component {
@@ -16,43 +15,39 @@ class BooksApp extends React.Component {
        * pages, as well as provide a good URL they can bookmark and share.
        */
       showSearchPage: false,
-      books: [],
-      currentlyReading: []
+      currentlyReading: [],
+      wantToRead: [],
+      read: []
     }
   }
 
   componentDidMount() {
     console.log('Mounted');
     let currentlyReading = [];
+    let wantToRead = [];
+    let read = [];
+
     BooksAPI.getAll().then(results => {
       console.log(results);
       results.forEach(book => {
         if (book.shelf === 'currentlyReading') {
           currentlyReading.push(book);
           console.log(book);
+        } else if (book.shelf === 'wantToRead') {
+          wantToRead.push(book);
+        } else if (book.shelf === 'read') {
+          read.push(book);
         }
       });
       this.setState({
-        books: results,
-        currentlyReading: currentlyReading
+        currentlyReading: currentlyReading,
+        wantToRead: wantToRead,
+        read: read
       });
     });
   }
 
   render() {
-    const currentlyReading = [
-      {
-        title: 'To Kill a Mockingbird',
-        authors: 'Harper Lee',
-        coverUrl: 'http://books.google.com/books/content?id=PGR2AwAAQBAJ&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE73-GnPVEyb7MOCxDzOYF1PTQRuf6nCss9LMNOSWBpxBrz8Pm2_mFtWMMg_Y1dx92HT7cUoQBeSWjs3oEztBVhUeDFQX6-tWlWz1-feexS0mlJPjotcwFqAg6hBYDXuK_bkyHD-y&source=gbs_api'
-      },
-      {
-        title: "Ender's Game",
-        authors: 'Orson Scott Card',
-        coverUrl: 'http://books.google.com/books/content?id=yDtCuFHXbAYC&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE72RRiTR6U5OUg3IY_LpHTL2NztVWAuZYNFE8dUuC0VlYabeyegLzpAnDPeWxE6RHi0C2ehrR9Gv20LH2dtjpbcUcs8YnH5VCCAH0Y2ICaKOTvrZTCObQbsfp4UbDqQyGISCZfGN&source=gbs_api'
-      }
-    ]
-
     return (
       <div className="app">
         {this.state.showSearchPage ? (
@@ -65,25 +60,8 @@ class BooksApp extends React.Component {
             <div className="list-books-content">
               <div>
                 <BookShelf title="Currently Reading" books={this.state.currentlyReading} />
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Currently Reading</h2>
-                  <div className="bookshelf-books">
-                    <ol className="books-grid">
-                      <li>
-                        <Book
-                          authors="Harper Lee"
-                          title="To Kill a Mockingbird"
-                          coverUrl='http://books.google.com/books/content?id=PGR2AwAAQBAJ&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE73-GnPVEyb7MOCxDzOYF1PTQRuf6nCss9LMNOSWBpxBrz8Pm2_mFtWMMg_Y1dx92HT7cUoQBeSWjs3oEztBVhUeDFQX6-tWlWz1-feexS0mlJPjotcwFqAg6hBYDXuK_bkyHD-y&source=gbs_api' />
-                      </li>
-                      <li>
-                      <Book
-                          authors="Orson Scott Card"
-                          title="Ender's Game"
-                          coverUrl="http://books.google.com/books/content?id=yDtCuFHXbAYC&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE72RRiTR6U5OUg3IY_LpHTL2NztVWAuZYNFE8dUuC0VlYabeyegLzpAnDPeWxE6RHi0C2ehrR9Gv20LH2dtjpbcUcs8YnH5VCCAH0Y2ICaKOTvrZTCObQbsfp4UbDqQyGISCZfGN&source=gbs_api" />
-                      </li>
-                    </ol>
-                  </div>
-                </div>
+                <BookShelf title="Want to Read" books={this.state.wantToRead} />
+                <BookShelf title="Read" books={this.state.read} />
                 <div className="bookshelf">
                   <h2 className="bookshelf-title">Want to Read</h2>
                   <div className="bookshelf-books">

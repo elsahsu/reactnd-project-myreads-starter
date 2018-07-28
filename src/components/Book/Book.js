@@ -8,7 +8,7 @@ const book = (props) => {
     };
 
     return (
-        <div className="book">
+      <div className="book">
         <div className="book-top">
           <div className="book-cover" style={cover_style}></div>
           <div className="book-shelf-changer">
