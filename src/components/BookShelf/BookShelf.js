@@ -6,6 +6,8 @@ const bookShelf = (props) => {
   const books = props.books.map(book => 
     <li key={book.id}>
       <Book
+        id={book.id}
+        moveHandler={props.moveHandler}
         authors={book.authors.join(', ')}
         title={book.title}
         coverUrl={book.imageLinks.thumbnail} />

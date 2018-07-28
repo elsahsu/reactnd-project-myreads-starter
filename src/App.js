@@ -47,6 +47,10 @@ class BooksApp extends React.Component {
     });
   }
 
+  moveToShelf(book, shelf) {
+    console.log('Move book' + book + ' to ' + shelf);
+  }
+
   render() {
     return (
       <div className="app">
@@ -59,9 +63,18 @@ class BooksApp extends React.Component {
             </div>
             <div className="list-books-content">
               <div>
-                <BookShelf title="Currently Reading" books={this.state.currentlyReading} />
-                <BookShelf title="Want to Read" books={this.state.wantToRead} />
-                <BookShelf title="Read" books={this.state.read} />
+                <BookShelf
+                  title="Currently Reading"
+                  moveHandler={this.moveToShelf}
+                  books={this.state.currentlyReading} />
+                <BookShelf
+                  title="Want to Read"
+                  moveHandler={this.moveToShelf}
+                  books={this.state.wantToRead} />
+                <BookShelf
+                  title="Read"
+                  moveHandler={this.moveToShelf}
+                  books={this.state.read} />
               </div>
             </div>
             <div className="open-search">
