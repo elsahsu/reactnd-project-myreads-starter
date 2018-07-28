@@ -7,7 +7,11 @@ const bookShelf = (props) => {
     <li key={book.id}>
       <Book
         id={book.id}
-        moveHandler={props.moveHandler}
+        shelf={book.shelf}
+        moveHandler={(shelf) => {
+          console.log('Move to ' + shelf);
+          props.moveHandler(book, shelf)
+        }}
         authors={book.authors.join(', ')}
         title={book.title}
         coverUrl={book.imageLinks.thumbnail} />

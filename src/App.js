@@ -48,7 +48,12 @@ class BooksApp extends React.Component {
   }
 
   moveToShelf(book, shelf) {
-    console.log('Move book' + book + ' to ' + shelf);
+    if (shelf === book.shelf) {
+      console.log('Book ' + book.id + ' already in ' + shelf);
+    } else {
+      console.log('Move book ' + book.id + ' to ' + shelf);
+      BooksAPI.update(book, shelf);
+    }
   }
 
   render() {
