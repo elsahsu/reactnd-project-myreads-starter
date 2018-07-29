@@ -52,11 +52,18 @@ class BooksApp extends React.Component {
     } else {
       console.log('Move book ' + book.id + ' from' + currentShelfName + ' to ' + targetShelfName);
       book.shelf = shelf;
-      const currentShelf = this.state[currentShelfName].filter((shelfBook) => book.id !== shelfBook.id);
-      const targetShelf = this.state[targetShelfName].concat([book]);
       let newState = {}
-      newState[currentShelfName] = currentShelf;
-      newState[targetShelfName] = targetShelf;
+      // Remove book from current shelf (if it is in one)
+      if (currentShelfName && currentShelfName !== 'none') {
+        const currentShelf = this.state[currentShelfName].filter((shelfBook) => book.id !== shelfBook.id);
+        newState[currentShelfName] = currentShelf;
+      }
+
+      // Add book to target shelf (if defined)
+      if (targetShelfName && targetShelfName !== 'none') {
+        const targetShelf = this.state[targetShelfName].concat([book]);
+        newState[targetShelfName] = targetShelf;
+      }
       this.setState(newState);
       BooksAPI.update(book, shelf);
     }
@@ -65,7 +72,7 @@ class BooksApp extends React.Component {
   render() {
     return (
       <div className="app">
-        <Route path="/search" component={SearchPage} />
+        <Route path="/search" render={() => <SearchPage moveHandler={this.moveToShelf} />} />
         <Route exact path="/" render={() => (
           <div className="list-books">
             <div className="list-books-title">

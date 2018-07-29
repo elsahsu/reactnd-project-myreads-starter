@@ -28,7 +28,8 @@ class SearchPage extends React.Component {
       <li key={book.id}>
       <Book
         id={book.id}
-        shelf={book.shelf}
+        shelf="none"
+        moveHandler={(shelf) => this.props.moveHandler(book, shelf)}
         title={book.title}
         authors={book.authors}
         coverUrl={book.imageLinks.thumbnail} />
