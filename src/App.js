@@ -10,6 +10,7 @@ class BooksApp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      shelvedBooks: [],
       currentlyReading: [],
       wantToRead: [],
       read: []
@@ -35,6 +36,7 @@ class BooksApp extends React.Component {
         }
       });
       this.setState({
+        shelvedBooks: results,
         currentlyReading: currentlyReading,
         wantToRead: wantToRead,
         read: read
@@ -50,7 +52,7 @@ class BooksApp extends React.Component {
     if (currentShelfName === targetShelfName) {
       console.log('Book ' + book.id + ' already in ' + targetShelfName);
     } else {
-      console.log('Move book ' + book.id + ' from' + currentShelfName + ' to ' + targetShelfName);
+      console.log('Move book ' + book.id + ' from ' + currentShelfName + ' to ' + targetShelfName);
       book.shelf = shelf;
       let newState = {}
       // Remove book from current shelf (if it is in one)
@@ -72,7 +74,9 @@ class BooksApp extends React.Component {
   render() {
     return (
       <div className="app">
-        <Route path="/search" render={() => <SearchPage moveHandler={this.moveToShelf} />} />
+        <Route path="/search" render={() => (
+          <SearchPage moveHandler={this.moveToShelf} shelvedBooks={this.state.shelvedBooks} />
+        )} />
         <Route exact path="/" render={() => (
           <div className="list-books">
             <div className="list-books-title">

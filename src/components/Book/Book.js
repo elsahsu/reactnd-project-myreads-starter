@@ -18,6 +18,7 @@ const book = (props) => {
         authorString = props.authors.join(', ');
     }
 
+    // console.log(props.title + ' in ' + props.shelf);
     /* <img src={props.coverUrl} /> */
     return (
       <div className="book">

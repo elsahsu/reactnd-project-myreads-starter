@@ -18,11 +18,12 @@ class SearchPage extends React.Component {
       console.log('No search term');
       return;
     }
+
     console.log(value);
-    this.setState({searchString: value});
+    this.setState({searchString: value.trim()});
     BooksAPI.search(value)
       .then((books) => {
-        console.log(books);
+        // console.log(books);
         if (books.error) {
           console.log(books.error)
           this.setState({matches: []});
@@ -31,18 +32,42 @@ class SearchPage extends React.Component {
         }
       })
       .catch((error) => {
-          console.log(error);
+        console.log(error);
+        this.setState({matches: []});
       });
+  }
+
+  /* Search results do not contain shelf information so need to check if this book is
+     already on some shelf. */
+  getShelf(book) {
+    if (book.shelf) {
+      return book.shelf;
+    }
+    let shelf = 'none'
+    this.props.shelvedBooks.forEach(
+      function(shelvedBook) {
+        if (shelvedBook.id === book.id) {
+          console.log('Found book ' + book.title + ' in shelf ' + shelvedBook.shelf);
+          shelf = shelvedBook.shelf;
+        }
+      }
+    );
+    return shelf;
   }
 
   render () {
     let foundBooks = '';
+    let foundString = 'No results found';
     if (this.state.matches) {
+        const count = this.state.matches.length;
+        if (count > 0) {
+            foundString = 'Showing ' + count + ' results';
+        }
         foundBooks = this.state.matches.map(book => (
           <li key={book.id}>
             <Book
               id={book.id}
-              shelf={book.shelf ? book.shelf : 'none'}
+              shelf={this.getShelf(book)}
               moveHandler={(shelf) => this.props.moveHandler(book, shelf)}
               title={book.title}
               authors={book.authors}
@@ -73,6 +98,7 @@ class SearchPage extends React.Component {
           </div>
         </div>
         <div className="search-books-results">
+          <div> {foundString} </div>
           <ol className="books-grid">
            {foundBooks}
           </ol>
