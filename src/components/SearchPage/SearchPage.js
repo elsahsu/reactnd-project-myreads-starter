@@ -1,7 +1,15 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-const searchPage = (props) => {
+class SearchPage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      matches: []
+    }
+  }
+
+  render () {
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -23,6 +31,7 @@ const searchPage = (props) => {
         </div>
       </div>
     )
+  }
 }
 
-export default searchPage;
+export default SearchPage;
