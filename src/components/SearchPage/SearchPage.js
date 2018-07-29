@@ -7,17 +7,19 @@ class SearchPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      searchString: '',
       matches: []
     }
   }
 
   searchTextChanged(value) {
     if (!value) {
-      this.setState({matches:[]});
+      this.setState({searchString: '', matches:[]});
       console.log('No search term');
       return;
     }
     console.log(value);
+    this.setState({searchString: value});
     BooksAPI.search(value)
       .then((books) => {
         console.log(books);
@@ -44,7 +46,7 @@ class SearchPage extends React.Component {
               moveHandler={(shelf) => this.props.moveHandler(book, shelf)}
               title={book.title}
               authors={book.authors}
-              coverUrl={book.imageLinks.thumbnail} />
+              coverUrl={book.imageLinks ? book.imageLinks.thumbnail : ''} />
            </li>
          )
       );
@@ -65,6 +67,7 @@ class SearchPage extends React.Component {
             */}
             <input
               type="text"
+              value={this.state.searchString}
               onChange={(event) => this.searchTextChanged(event.target.value)}
               placeholder="Search by title or author" />
           </div>

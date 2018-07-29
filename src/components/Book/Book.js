@@ -2,18 +2,22 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 const book = (props) => {
-    const cover_style = {
+    let cover_style = {
         width: 128,
         height: 193,
-        backgroundImage: 'url(' + props.coverUrl +')',
         backgroundRepeat: 'no-repeat'
     };
+
+    if (props.coverUrl) {
+        cover_style.backgroundImage = 'url(' + props.coverUrl +')';
+    }
 
     let authorString = '';
     if (props.authors) {
         // book.authors.join(', ')
         authorString = props.authors.join(', ');
     }
+
     /* <img src={props.coverUrl} /> */
     return (
       <div className="book">
