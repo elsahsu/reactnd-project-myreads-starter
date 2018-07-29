@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 const book = (props) => {
     const cover_style = {
@@ -34,6 +35,13 @@ const book = (props) => {
         <div className="book-authors">{authorString}</div>
       </div>
     )
+}
+
+book.propTypes = {
+    title: PropTypes.string.isRequired,
+    authors: PropTypes.array,
+    coverUrl: PropTypes.string,
+    moveHandler: PropTypes.func.isRequired
 }
 
 export default book;
