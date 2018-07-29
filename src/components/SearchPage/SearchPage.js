@@ -12,30 +12,43 @@ class SearchPage extends React.Component {
   }
 
   searchTextChanged(value) {
-    console.log(value);
     if (!value) {
       this.setState({matches:[]});
+      console.log('No search term');
       return;
     }
-    BooksAPI.search(value).then((books) => {
-      console.log(books);
-      this.setState({matches: books});
-    });
+    console.log(value);
+    BooksAPI.search(value)
+      .then((books) => {
+        console.log(books);
+        if (books.error) {
+          console.log(books.error)
+          this.setState({matches: []});
+        } else {
+          this.setState({matches: books});
+        }
+      })
+      .catch((error) => {
+          console.log(error);
+      });
   }
 
   render () {
-    const foundBooks = this.state.matches.map(book => (
-      <li key={book.id}>
-      <Book
-        id={book.id}
-        shelf="none"
-        moveHandler={(shelf) => this.props.moveHandler(book, shelf)}
-        title={book.title}
-        authors={book.authors}
-        coverUrl={book.imageLinks.thumbnail} />
-       </li>
-       )
-    );
+    let foundBooks = '';
+    if (this.state.matches) {
+        foundBooks = this.state.matches.map(book => (
+          <li key={book.id}>
+            <Book
+              id={book.id}
+              shelf={book.shelf ? book.shelf : 'none'}
+              moveHandler={(shelf) => this.props.moveHandler(book, shelf)}
+              title={book.title}
+              authors={book.authors}
+              coverUrl={book.imageLinks.thumbnail} />
+           </li>
+         )
+      );
+    }
 
     return (
       <div className="search-books">
