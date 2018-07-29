@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import * as BooksAPI from '../../BooksAPI'
+import Book from '../Book/Book'
 
 class SearchPage extends React.Component {
   constructor(props) {
@@ -11,13 +12,29 @@ class SearchPage extends React.Component {
   }
 
   searchTextChanged(value) {
-      console.log(value);
-      BooksAPI.search(value).then((books) => {
-          console.log(books);
-      });
+    console.log(value);
+    if (!value) {
+      this.setState({matches:[]});
+      return;
+    }
+    BooksAPI.search(value).then((books) => {
+      console.log(books);
+      this.setState({matches: books});
+    });
   }
 
   render () {
+    const foundBooks = this.state.matches.map(book => (
+      <li key={book.id}>
+      <Book
+        id={book.id}
+        shelf={book.shelf}
+        title={book.title}
+        coverUrl={book.imageLinks.thumbnail} />
+       </li>
+       )
+    );
+
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -38,7 +55,9 @@ class SearchPage extends React.Component {
           </div>
         </div>
         <div className="search-books-results">
-          <ol className="books-grid"></ol>
+          <ol className="books-grid">
+           {foundBooks}
+          </ol>
         </div>
       </div>
     )
