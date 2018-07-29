@@ -12,7 +12,7 @@ const bookShelf = (props) => {
           console.log('Move to ' + shelf);
           props.moveHandler(book, shelf)
         }}
-        authors={book.authors.join(', ')}
+        authors={book.authors}
         title={book.title}
         coverUrl={book.imageLinks.thumbnail} />
     </li>

@@ -30,6 +30,7 @@ class SearchPage extends React.Component {
         id={book.id}
         shelf={book.shelf}
         title={book.title}
+        authors={book.authors}
         coverUrl={book.imageLinks.thumbnail} />
        </li>
        )

@@ -8,6 +8,11 @@ const book = (props) => {
         backgroundRepeat: 'no-repeat'
     };
 
+    let authorString = '';
+    if (props.authors) {
+        // book.authors.join(', ')
+        authorString = props.authors.join(', ');
+    }
     /* <img src={props.coverUrl} /> */
     return (
       <div className="book">
@@ -26,7 +31,7 @@ const book = (props) => {
           </div>
         </div>
         <div className="book-title">{props.title}</div>
-        <div className="book-authors">{props.authors}</div>
+        <div className="book-authors">{authorString}</div>
       </div>
     )
 }
